@@ -5,6 +5,9 @@ export interface SpeechRecognitionOptions {
   onStop?: () => void;
   onError?: (error: Error) => void;
   throwOnUnsupported?: boolean,
+  lang?: string,
+  interimResults?: boolean,
+  maxAlternatives?: number
 }
 
 export interface SpeechRecognitionEvent extends Event {
@@ -15,8 +18,7 @@ type SpeechRecognitionEventListener =
   ((eventName: 'error', callback: (event: Error) => void) => void) &
   ((eventName: 'start' | 'result' | 'end', callback: (event: SpeechRecognitionEvent) => void) => void);
 
-
-type SpeechRecognition = new () => {
+type Recognition = {
   lang: string,
   interimResults: boolean,
   maxAlternatives: number,
@@ -24,6 +26,8 @@ type SpeechRecognition = new () => {
   start: () => void;
   stop: () => void;
 }
+
+type SpeechRecognition = new () => Recognition
 
 export interface SpeechRecognitionHandles {
   startRecording: () => void,
@@ -49,7 +53,10 @@ export function useSpeechRecognition({
   onEnd = () => {},
   onStop = () => {},
   onError = () => {},
-}: SpeechRecognitionOptions = {}): SpeechRecognitionHandles {
+  lang = 'fr-FR',
+  interimResults = false,
+  maxAlternatives = 1
+}: SpeechRecognitionOptions = {}): SpeechRecognitionHandles & { recognition: Recognition } {
   if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) {
     if (throwOnUnsupported) {
       throw new Error("Browser doesn't support the Web Speech API");
@@ -69,9 +76,9 @@ export function useSpeechRecognition({
   }
 
   const recognition = new SpeechRecognition();
-  recognition.lang = 'fr-Fr';
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
+  recognition.lang = lang;
+  recognition.interimResults = interimResults;
+  recognition.maxAlternatives = maxAlternatives;
 
   const transcriptHistory: string[] = [];
   let lastText: string = '';
@@ -107,5 +114,6 @@ export function useSpeechRecognition({
   return {
     startRecording,
     stopRecording,
+    recognition
   };
 }

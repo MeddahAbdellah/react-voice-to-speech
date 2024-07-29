@@ -1,6 +1,6 @@
 {
   "name": "react-voice-to-text",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A small lib to use the speech recognition api in react",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
