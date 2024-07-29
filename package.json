@@ -1,0 +1,19 @@
+{
+  "name": "react-voice-to-text",
+  "version": "1.0.0",
+  "description": "A small lib to use the speech recognition api in react",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "text-to-speach",
+    "speach-recognition"
+  ],
+  "author": "Meddah Abdallah",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  }
+}
