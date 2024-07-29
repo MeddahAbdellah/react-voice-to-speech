@@ -31,10 +31,10 @@ export interface SpeechRecognitionHandles {
 }
 
 export function isSpeechRecognitionSupported(): boolean {
-  if (!('SpeechRecognition' in window) || !('webkitSpeechRecognition' in window)) {
+  if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) {
     return false;
   }
-  const SpeechRecognition = (window.SpeechRecognition || window.webkitSpeechRecognition) as SpeechRecognition;
+  const SpeechRecognition = (window['SpeechRecognition'] || window['webkitSpeechRecognition']) as SpeechRecognition;
   if (!SpeechRecognition) {
     return false;
   }
@@ -50,7 +50,7 @@ export function useSpeechRecognition({
   onStop = () => {},
   onError = () => {},
 }: SpeechRecognitionOptions = {}): SpeechRecognitionHandles {
-  if (!('SpeechRecognition' in window) || !('webkitSpeechRecognition' in window)) {
+  if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) {
     if (throwOnUnsupported) {
       throw new Error("Browser doesn't support the Web Speech API");
     } else {
@@ -58,7 +58,7 @@ export function useSpeechRecognition({
       return;
     }
   }
-  const SpeechRecognition = (window.SpeechRecognition || window.webkitSpeechRecognition) as SpeechRecognition;
+  const SpeechRecognition = (window['SpeechRecognition'] || window['webkitSpeechRecognition']) as SpeechRecognition;
   if (!SpeechRecognition) {
     if (throwOnUnsupported) {
       throw new Error("Browser doesn't support the Web Speech API");
